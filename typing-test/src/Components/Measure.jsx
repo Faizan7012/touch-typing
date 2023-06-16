@@ -2,9 +2,10 @@ import { Box, Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { plainText } from "./Textarr";
+import Keyboard from "./Keyboard";
 const Measure = () => {
   const presentText = useSelector((store) => store.AppReducer.presentText);
-
+  const [shakeAnimation, setShakeAnimation] = useState(false);
   const [inputtypes, setInputtypes] = useState("");
   const [presenttchar, setPresenttchar] = useState(presentText[0]);
   const [runt, setRunt] = useState(null);
@@ -79,6 +80,10 @@ const Measure = () => {
     }
 
     if (test !== value) {
+       setShakeAnimation(true);
+      setTimeout(() => {
+        setShakeAnimation(false);
+      }, 1000);
       setGltchars(gltchars + 1);
       setGltchar(gltchar + 1);
     } else {
@@ -113,7 +118,8 @@ const Measure = () => {
   const secondss = seconds % 60;
 
   return (
-    <div>
+    <Box
+     className={`container ${shakeAnimation ? 'shake' : ''}`}>
        <Textarea
       w={['300px','400px','500px','600px']}
       fontWeight='600'
@@ -164,7 +170,9 @@ const Measure = () => {
           )}
         </Box>
       </Box>
-    </div>
+      <Keyboard currKey={presenttchar === " " ? "Space" : presenttchar} />
+
+    </Box>
   );
 };
 
